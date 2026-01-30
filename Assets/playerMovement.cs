@@ -39,6 +39,20 @@ public class playerMovement : MonoBehaviour
         Debug.Log(isGrounded);
     }
 
+    public void ChangeMovementSystem(int systemNumber)
+    {
+        switch(systemNumber)
+        {
+            case 1:
+                rb.freezeRotation = true;
+                currentMovementSystem = 1;
+                break;
+            default:
+                Debug.Log("Nothing has been changed");
+                break;
+        }
+    }
+
     public void Move(InputAction.CallbackContext ctx)
     {
         MovementDirection = ctx.ReadValue<Vector2>();
@@ -46,7 +60,7 @@ public class playerMovement : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext ctx)
     {
-        if(currentMovementSystem == 0)
+        if(currentMovementSystem == 0 || currentMovementSystem == 1) // this movement system has flutter jump.
         {
             if (ctx.canceled)
             {
@@ -61,12 +75,12 @@ public class playerMovement : MonoBehaviour
                 return;
             }
         } 
-        else if(currentMovementSystem == 1)
+        else if(currentMovementSystem == 2) // this movement system gets rid of the flutter jump
         {
             if (ctx.canceled)
             {
-                if (spamJumpCount > 0) return; // you can comment this out to add back the flutter jump thing
-                spamJumpCount++; // comment this out for the flutter jump thing
+                if (spamJumpCount > 0) return; // these 2 lines fix the flutter jump bug
+                spamJumpCount++; // these 2 lines fix the flutter jump bug
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
                 return;
             }
@@ -80,15 +94,6 @@ public class playerMovement : MonoBehaviour
             }
         }
         
-    }
-
-    public void Interact(InputAction.CallbackContext ctx)
-    {
-        if(ctx.performed)
-        {
-            dialogueBox.canAccessDialogue = !dialogueBox.canAccessDialogue;
-            dialogueBox.StartDialogue();
-        }
     }
 
     private bool GroundCheck()
