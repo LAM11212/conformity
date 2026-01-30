@@ -11,6 +11,7 @@ public class DialogueBox : MonoBehaviour
     public GameObject dialogueUI;
     public float textSpeed;
     public bool canAccessDialogue = false;
+    private bool skippedLine = false;
 
     private int index;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -32,6 +33,12 @@ public class DialogueBox : MonoBehaviour
 
         if(ctx.performed)
         {
+            if(skippedLine)
+            {
+                skippedLine = false;
+                return;
+            }
+            skippedLine = true;
             if (textComponent.text == dialogueObject.lines[index])
             {
                 NextLine();
@@ -49,6 +56,11 @@ public class DialogueBox : MonoBehaviour
         dialogueUI.SetActive(true);
         index = 0;
         StartCoroutine(TypeLine());
+    }
+
+    public void clearPrevDialogue()
+    {
+        textComponent.text = string.Empty;
     }
 
     IEnumerator TypeLine()
@@ -72,5 +84,10 @@ public class DialogueBox : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+    }
+
+    public void setDialogue(DialogueObject newDialogue)
+    {
+        dialogueObject = newDialogue;
     }
 }
