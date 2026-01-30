@@ -14,6 +14,7 @@ public class playerMovement : MonoBehaviour
     public Vector2 groundCheckSize = new Vector2(0.5f, 0.05f);
     public LayerMask groundLayer;
     public Transform groundCheckPosition;
+    public DialogueBox dialogueBox;
     private Rigidbody2D rb;
     //private Animator animator;
     //private SpriteRenderer spriteRenderer;
@@ -35,6 +36,7 @@ public class playerMovement : MonoBehaviour
     {
         isGrounded = GroundCheck();
         rb.linearVelocity = new Vector2(MovementDirection.x * MoveSpeed, rb.linearVelocity.y);
+        Debug.Log(isGrounded);
     }
 
     public void Move(InputAction.CallbackContext ctx)
@@ -78,6 +80,15 @@ public class playerMovement : MonoBehaviour
             }
         }
         
+    }
+
+    public void Interact(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+        {
+            dialogueBox.canAccessDialogue = !dialogueBox.canAccessDialogue;
+            dialogueBox.StartDialogue();
+        }
     }
 
     private bool GroundCheck()
