@@ -22,7 +22,7 @@ public class playerMovement : MonoBehaviour
     public bool isFacingRight = true;
     public float MoveSpeed = 8f;
     public float JumpForce = 9.81f;
-    Vector2 MovementDirection;
+    public Vector2 MovementDirection;
     private bool isGrounded = false;
     private int spamJumpCount = 0;
     public int currentMovementSystem = 0;

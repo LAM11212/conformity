@@ -4,5 +4,4 @@ using UnityEngine;
 public class DialogueObject : ScriptableObject
 {
     public string[] lines;
-    public float typeSpeed = 0.05f;
 }
