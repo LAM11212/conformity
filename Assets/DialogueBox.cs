@@ -9,9 +9,10 @@ public class DialogueBox : MonoBehaviour
     //public string[] lines;
     public DialogueObject dialogueObject;
     public GameObject dialogueUI;
-    public float textSpeed;
+    public float textSpeed = 0.05f;
     public bool canAccessDialogue = false;
     private bool skippedLine = false;
+    playerMovement pm;
 
     private int index;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -19,6 +20,7 @@ public class DialogueBox : MonoBehaviour
     {
         textComponent.text = string.Empty;
         dialogueUI.SetActive(false);
+        pm = Object.FindFirstObjectByType<playerMovement>();
     }
 
     // Update is called once per frame
@@ -53,6 +55,7 @@ public class DialogueBox : MonoBehaviour
 
     public void StartDialogue()
     {
+        pm.enabled = false;
         dialogueUI.SetActive(true);
         index = 0;
         StartCoroutine(TypeLine());
@@ -82,6 +85,7 @@ public class DialogueBox : MonoBehaviour
         }
         else
         {
+            pm.enabled = true;
             gameObject.SetActive(false);
         }
     }
