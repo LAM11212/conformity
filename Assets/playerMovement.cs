@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,6 +27,10 @@ public class playerMovement : MonoBehaviour
     private bool isGrounded = false;
     private int spamJumpCount = 0;
     public int currentMovementSystem = 0;
+    private float spinStrength = 5f;
+    private float spinDuration = 2f;
+    private float spinTimer = 0f;
+    private bool isSpinning = false;
 
     private void Awake()
     {
@@ -34,9 +39,10 @@ public class playerMovement : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(spinTimer);
         isGrounded = GroundCheck();
+        ProcessFling();
         rb.linearVelocity = new Vector2(MovementDirection.x * MoveSpeed, rb.linearVelocity.y);
-        Debug.Log(isGrounded);
     }
 
     public void ChangeMovementSystem(int systemNumber)
@@ -94,6 +100,33 @@ public class playerMovement : MonoBehaviour
             }
         }
         
+    }
+
+    public void Fling(InputAction.CallbackContext ctx)
+    {
+
+        if(ctx.performed && !isSpinning)
+        {
+            spinTimer = spinDuration;
+            Vector2 upwardForce = new Vector2(0.0f, 8.0f);
+            rb.AddForce(upwardForce, ForceMode2D.Impulse);
+        }
+    }
+
+    private void ProcessFling()
+    {
+        if(spinTimer > 0f)
+        {
+            spinTimer -= Time.deltaTime;
+            rb.angularVelocity = spinStrength * 360f;
+            isSpinning = true;
+        } 
+        else
+        {
+            isSpinning = false;
+            spinTimer = 0f;
+            rb.angularVelocity = 0f;
+        }
     }
 
     private bool GroundCheck()
