@@ -31,17 +31,19 @@ public class playerMovement : MonoBehaviour
     private float spinDuration = 2f;
     private float spinTimer = 0f;
     private bool isSpinning = false;
+    public Transform currentSpawnPoint;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        currentSpawnPoint = this.transform;
     }
 
     private void Update()
     {
         Debug.Log(spinTimer);
         isGrounded = GroundCheck();
-        ProcessFling();
+        //ProcessFling();
         rb.linearVelocity = new Vector2(MovementDirection.x * MoveSpeed, rb.linearVelocity.y);
     }
 
